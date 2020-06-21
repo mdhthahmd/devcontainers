@@ -108,6 +108,12 @@ if [ "$INSTALL_ZSH" = "true" ] && [ ! -d "/root/.oh-my-zsh" ]; then
     apt-get install -y zsh
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     echo "export PATH=\$PATH:\$HOME/.local/bin" >> /root/.zshrc
+    # Install powerlevel9k theme
+    && git clone https://github.com/Powerlevel9k/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k \
+     # and set it to default
+    && sed -i 's/robbyrussell/powerlevel9k\/powerlevel9k/g' /root/.zshrc \
+    # set color support
+    && sed -i '1iexport TERM="xterm-256color"' /root/.zshrc \
     cp -R /root/.oh-my-zsh /home/$USERNAME
     cp /root/.zshrc /home/$USERNAME
     sed -i -e "s/\/root\/.oh-my-zsh/\/home\/$USERNAME\/.oh-my-zsh/g" /home/$USERNAME/.zshrc
