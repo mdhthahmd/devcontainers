@@ -5,6 +5,8 @@ services:
       - "3600:3600"
     volumes: 
       - ..:/workspace
+      - .zshrc:/home/node/.zshrc
+      - .zshrc:/root/.zshrc
     build: 
       context: .
       dockerfile: Dockerfile
