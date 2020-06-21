@@ -1,12 +1,10 @@
 version: '3'
 services:
   node:
-    user: node
     ports: 
       - "3600:3600"
     volumes: 
       - ..:/workspace
-      - .zshrc:/home/node/.zshrc
     build: 
       context: .
       dockerfile: Dockerfile
