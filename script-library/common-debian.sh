@@ -109,7 +109,7 @@ if [ "$INSTALL_ZSH" = "true" ] && [ ! -d "/root/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     echo "export PATH=\$PATH:\$HOME/.local/bin" >> /root/.zshrc
     sh -c "$(git clone https://github.com/Powerlevel9k/powerlevel9k.git /root/.oh-my-zsh/custom/themes/powerlevel9k)"
-    sed -i "s/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"powerlevel9k\/powerlevel9k\"/g" /root/.zshrc
+    #sed -i "s/ZSH_THEME=\"robbyrussell\"/ZSH_THEME=\"powerlevel9k\/powerlevel9k\"/g" /root/.zshrc
     usermod --shell /bin/zsh root
     usermod --shell /bin/zsh $USERNAME
     cp -R /root/.oh-my-zsh /home/$USERNAME
