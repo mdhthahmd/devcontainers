@@ -4,7 +4,7 @@ services:
     ports: 
       - "3600:3600"
     volumes: 
-      - ..:/workspace
+      - ..:/workspace:cached
       #- .zshrc:/home/node/.zshrc
       #- .zshrc:/root/.zshrc
     build: 

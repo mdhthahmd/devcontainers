@@ -11,8 +11,10 @@ ENV NVM_DIR=/usr/local/share/nvm
 # Options for common package install script
 ARG INSTALL_ZSH="true"
 ARG UPGRADE_PACKAGES="true"
-ARG COMMON_SCRIPT_SOURCE="https://raw.githubusercontent.com/mdhthahmd/devcontainers/master/script-library/common-debian.sh"
+#ARG COMMON_SCRIPT_SOURCE="https://raw.githubusercontent.com/mdhthahmd/devcontainers/master/script-library/common-debian.sh"
 ARG COMMON_SCRIPT_SHA="dev-mode"
+
+COPY common-setup.sh /tmp/common-setup.sh
 
 # Configure apt and install packages
 RUN apt-get update \
@@ -20,8 +22,8 @@ RUN apt-get update \
     #
     # Verify git, common tools / libs installed, add/modify non-root user, optionally install zsh
     && apt-get -y install --no-install-recommends curl ca-certificates 2>&1 \
-    && curl -sSL  ${COMMON_SCRIPT_SOURCE} -o /tmp/common-setup.sh \
-    && ([ "${COMMON_SCRIPT_SHA}" = "dev-mode" ] || (echo "${COMMON_SCRIPT_SHA} */tmp/common-setup.sh" | sha256sum -c -)) \
+    #&& curl -sSL  ${COMMON_SCRIPT_SOURCE} -o /tmp/common-setup.sh \
+    #&& ([ "${COMMON_SCRIPT_SHA}" = "dev-mode" ] || (echo "${COMMON_SCRIPT_SHA} */tmp/common-setup.sh" | sha256sum -c -)) \
     && /bin/bash /tmp/common-setup.sh "${INSTALL_ZSH}" "${USERNAME}" "${USER_UID}" "${USER_GID}" "${UPGRADE_PACKAGES}" \
     && rm /tmp/common-setup.sh \
     #
@@ -61,7 +63,18 @@ RUN apt-get update \
     # Can leave in Dockerfile once upstream base image moves to > 7.0.7-28.
     && apt-get purge -y imagemagick imagemagick-6-common \
     #
+    # Install eslint globally
+    && sudo -u ${USERNAME} npm install -g eslint \
+    #
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
+
+# [Optional] Update UID/GID if needed
+# RUN if [ "$USER_GID" != "1000" ] || [ "$USER_UID" != "1000" ]; then \
+#         groupmod --gid $USER_GID $USERNAME \
+#         && usermod --uid $USER_UID --gid $USER_GID $USERNAME \
+#         && chmod -R $USER_UID:$USER_GID /home/$USERNAME \
+#         && chmod -R $USER_UID:root /usr/local/share/nvm /usr/local/share/npm-global; \
+#     fi
