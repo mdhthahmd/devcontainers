@@ -44,8 +44,8 @@ jobs:
         with:
           context: ./containers/dotnet
           build-args:
-            - VARIANT="5.0"
-            - NODE_VERSION="lts/*"
+            - VARIANT=5.0
+            - NODE_VERSION=lts/*
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
