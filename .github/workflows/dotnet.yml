@@ -42,5 +42,5 @@ jobs:
         with:
           context: ./containers/dotnet
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          labels: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
