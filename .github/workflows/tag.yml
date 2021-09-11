@@ -5,12 +5,7 @@ on:
     workflows: ["Create and publish dotnet devcontainer image"]
     types:
       - completed
-
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.actor }}/${{ github.repository }}/dotnet:latest
-
-
+      
 jobs:
   add-versioned-tags-to-image:
     runs-on: ubuntu-latest
@@ -19,6 +14,10 @@ jobs:
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
+      env:
+        REGISTRY: ghcr.io
+        IMAGE_NAME: ${{ env.REGISTRY }}/${{ github.actor }}/${{ github.repository }}/dotnet:latest
+
 
     steps: 
       - name: See the tag from current version numbers
