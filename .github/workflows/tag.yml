@@ -8,26 +8,30 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/dotnet
+  IMAGE_NAME: ${{ github.actor }}/${{ github.repository }}/dotnet
 
 
 jobs:
   add-versioned-tags-to-image:
     runs-on: ubuntu-latest
     container: 
-      image: ghcr.io/mdhthahmd/devcontainers/dotnet:latest
+      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
 
     steps: 
-      - name: What OS is running
-        run: uname -a
+      - name: See the tag from current version numbers
+        run: echo "sdk-$(dotnet --version)-nodejs-$(node --version)"
 
-      - name: What dotnet version
-        run: dotnet --version
+      # - name: Build up the tag from current version numbers
+      #   run: echo "TAG=sdk-$(dotnet --version)-nodejs-$(node --version)" >> $GITHUB_ENV
 
-      - name: What node version
-        run: node --version
+      # - name: Log in to the container registry
+      #   uses: docker/login-action@v1.10.0
+      #   with:
+      #     registry: ${{ env.REGISTRY }}
+      #     username: ${{ github.actor }}
+      #     password: ${{ secrets.GH_TOKEN }}
 
 
