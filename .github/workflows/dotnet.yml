@@ -11,6 +11,7 @@ env:
 
 jobs:
   publish-latest:
+    name: Build the devcontainer, tags it with latest, and push it to registry
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -60,6 +61,7 @@ jobs:
       image : ${{ steps.save.outputs.image }}
   
   generate-tag:
+    name: Run the published latest image and identify installed versions of dotnet and nodejs
     needs: publish-latest
     runs-on: ubuntu-latest
     container: 
@@ -69,7 +71,7 @@ jobs:
         password: ${{ secrets.GH_TOKEN }}
 
     steps: 
-      - name: See the tag from current version numbers
+      - name: View Tag
         run: echo "sdk-$(dotnet --version)-nodejs-$(echo $(node --version) | cut -c 2-)"
 
       - name: Retrieve Tag
@@ -81,6 +83,7 @@ jobs:
       tag: ${{ steps.version.outputs.tag }}
   
   apply-tag:
+    name : Pull the image with latest tag and add the versioned tag from previous(generate-tag) job and push to registry
     needs: [publish-latest, generate-tag]
     runs-on: ubuntu-latest
     permissions:
@@ -103,4 +106,3 @@ jobs:
 
       - name: Push the image to registry
         run: docker push ${{ needs.publish-latest.outputs.image }}:${{ needs.generate-tag.outputs.tag }}
-      
