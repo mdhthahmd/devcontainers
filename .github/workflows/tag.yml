@@ -16,17 +16,11 @@ jobs:
     runs-on: ubuntu-latest
     container: 
       image: ghcr.io/mdhthahmd/devcontainers/dotnet:latest
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.GH_TOKEN }}
 
     steps: 
-      - uses: actions/checkout@v2
-
-      - name: Log in to the container registry
-        uses: docker/login-action@v1.10.0
-        with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GH_TOKEN }}
-
       - name: What OS is running
         run: uname -a
 
