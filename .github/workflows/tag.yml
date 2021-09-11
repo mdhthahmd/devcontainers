@@ -26,9 +26,9 @@ jobs:
         id: version
         run: |
           echo "::set-output name=tag::$(echo"sdk-$(dotnet --version)-nodejs-$(echo $(node --version) | cut -c 2-)")"
-
-      outputs:
-        tag: ${{ steps.version.outputs.tag }}
+          
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
   
   apply-tag:
     needs: generate-tag
@@ -50,7 +50,3 @@ jobs:
 
       - name: Push the image to registry
         run: docker push ghcr.io/mdhthahmd/devcontainers/dotnet:${{ needs.generate-tag.outputs.tag }}
-
-
-
-
