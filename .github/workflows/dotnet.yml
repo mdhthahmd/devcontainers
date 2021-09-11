@@ -6,8 +6,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  DEV_ENV : dotnet
   IMAGE_NAME: ${{ github.repository }}
+  DEV_ENV : dotnet
 
 jobs:
   publish-latest:
@@ -54,7 +54,7 @@ jobs:
       - name : save image name to output
         id: save
         run:
-          echo "::set-output name=image::${{ env.REGISTRY }}/$${{ env.IMAGE_NAME }}/${{ env.DEV_ENV }}"
+          echo "::set-output name=image::${{ env.REGISTRY }}/${{ github.actor }}/${{ env.IMAGE_NAME }}/${{ env.DEV_ENV }}"
 
     outputs:
       image : ${{ steps.save.outputs.image }}
