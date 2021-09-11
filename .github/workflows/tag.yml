@@ -1,22 +1,19 @@
-name: Add versioned tags for the latest package
+name: Add versioned tags for the latest image
 
 on:
   workflow_run:
     workflows: ["Create and publish dotnet devcontainer image"]
     types:
       - completed
-      
+
 jobs:
   add-versioned-tags-to-image:
     runs-on: ubuntu-latest
     container: 
-      image: ${{ env.IMAGE_NAME }}
+      image: ghcr.io/mdhthahmd/devcontainers/dotnet:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
-      env:
-        REGISTRY: ghcr.io
-        IMAGE_NAME: ${{ env.REGISTRY }}/${{ github.actor }}/${{ github.repository }}/dotnet:latest
 
 
     steps: 
