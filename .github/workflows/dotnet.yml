@@ -81,7 +81,7 @@ jobs:
       tag: ${{ steps.version.outputs.tag }}
   
   apply-tag:
-    needs: generate-tag
+    needs: [publish-latest, generate-tag]
     runs-on: ubuntu-latest
     permissions:
       contents: read
