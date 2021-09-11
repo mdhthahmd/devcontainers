@@ -8,14 +8,14 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.actor }}/${{ github.repository }}/dotnet
+  IMAGE_NAME: ${{ github.actor }}/${{ github.repository }}/dotnet:latest
 
 
 jobs:
   add-versioned-tags-to-image:
     runs-on: ubuntu-latest
     container: 
-      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+      image: ${{ env.IMAGE_NAME }}
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
