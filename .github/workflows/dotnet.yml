@@ -7,7 +7,7 @@ on:
 env:
   REGISTRY: ghcr.io
   DEV_ENV : dotnet
-  IMAGE_NAME: ${{ github.repository }}/${{ env.DEV_ENV }}
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
   publish-latest:
@@ -31,7 +31,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v3.5.0
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ env.DEV_ENV }}
           tags: |
             type=raw,value=latest
           labels: |
@@ -54,7 +54,7 @@ jobs:
       - name : save image name to output
         id: save
         run:
-          echo "::set-output name=image::${{ env.REGISTRY }}/$${{ env.IMAGE_NAME }}"
+          echo "::set-output name=image::${{ env.REGISTRY }}/$${{ env.IMAGE_NAME }}/${{ env.DEV_ENV }}"
 
     outputs:
       image : ${{ steps.save.outputs.image }}
