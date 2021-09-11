@@ -15,7 +15,7 @@ jobs:
   add-versioned-tags-to-image:
     runs-on: ubuntu-latest
     container: 
-      image: ghcr.io/devcontainers/dotnet:latest
+      image: ghcr.io/mdhthahmd/devcontainers/dotnet:latest
 
     steps: 
       - uses: actions/checkout@v2
