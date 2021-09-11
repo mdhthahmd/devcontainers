@@ -18,7 +18,7 @@ jobs:
 
     steps: 
       - name: See the tag from current version numbers
-        run: echo "sdk-$(dotnet --version)-nodejs-$(echo node --version | cut -c 2-)"
+        run: echo "sdk-$(dotnet --version)-nodejs-$(echo $(node --version) | cut -c 2-)"
 
       # - name: Build up the tag from current version numbers
       #   run: echo "TAG=sdk-$(dotnet --version)-nodejs-$(node --version)" >> $GITHUB_ENV
