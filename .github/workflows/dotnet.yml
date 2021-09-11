@@ -6,7 +6,8 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}/dotnet
+  DEV_ENV : dotnet
+  IMAGE_NAME: ${{ github.repository }}/${{ env.DEV_ENV }}
 
 jobs:
   publish-latest:
@@ -49,12 +50,20 @@ jobs:
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name : save image name to output
+        id: save
+        run:
+          echo "::set-output name=image::${{ env.REGISTRY }}/$${{ env.IMAGE_NAME }}"
+
+    outputs:
+      image : ${{ steps.save.outputs.image }}
   
   generate-tag:
     needs: publish-latest
     runs-on: ubuntu-latest
     container: 
-      image: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}:latest
+      image: ${{ needs.publish-latest.outputs.image }}:latest
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.GH_TOKEN }}
@@ -64,6 +73,7 @@ jobs:
         run: echo "sdk-$(dotnet --version)-nodejs-$(echo $(node --version) | cut -c 2-)"
 
       - name: Retrieve Tag
+        id: version
         run: |
           echo "::set-output name=tag::$(echo "sdk-$(dotnet --version)-nodejs-$(echo $(node --version) | cut -c 2-)")"
           
@@ -86,11 +96,11 @@ jobs:
           password: ${{ secrets.GH_TOKEN }}
 
       - name: Pull the latest image
-        run: docker pull ghcr.io/mdhthahmd/devcontainers/dotnet:latest
+        run: docker pull ${{ needs.publish-latest.outputs.image }}:latest
 
       - name: Re-Tag the latest image with versioned tag
-        run: docker tag ghcr.io/mdhthahmd/devcontainers/dotnet:latest ghcr.io/mdhthahmd/devcontainers/dotnet:${{ needs.generate-tag.outputs.tag }}
+        run: docker tag ${{ needs.publish-latest.outputs.image }}:latest ${{ needs.publish-latest.outputs.image }}:${{ needs.generate-tag.outputs.tag }}
 
       - name: Push the image to registry
-        run: docker push ghcr.io/mdhthahmd/devcontainers/dotnet:${{ needs.generate-tag.outputs.tag }}
+        run: docker push ${{ needs.publish-latest.outputs.image }}:${{ needs.generate-tag.outputs.tag }}
       
