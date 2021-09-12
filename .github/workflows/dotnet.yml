@@ -13,7 +13,7 @@ env:
 
 jobs:
   publish-latest:
-    name: Build the devcontainer, tags it with latest, and push it to registry
+    name: Build and push latest image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -48,7 +48,7 @@ jobs:
         with:
           context: ./containers/dotnet
           build-args: |
-            VARIANT=3.1
+            VARIANT=5.0
             NODE_VERSION=lts/*
           push: true
           tags: ${{ steps.meta.outputs.tags }}
@@ -63,7 +63,7 @@ jobs:
       image : ${{ steps.save.outputs.image }}
   
   generate-tag:
-    name: Run the published latest image and identify installed versions of dotnet and nodejs
+    name: Generate versioned tag
     needs: publish-latest
     runs-on: ubuntu-latest
     container: 
@@ -85,7 +85,7 @@ jobs:
       tag: ${{ steps.version.outputs.tag }}
   
   apply-tag:
-    name : Pull the image with latest tag and add the versioned tag from previous(generate-tag) job and push to registry
+    name : Push versioned image
     needs: [publish-latest, generate-tag]
     runs-on: ubuntu-latest
     permissions:
