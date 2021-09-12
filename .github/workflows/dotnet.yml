@@ -2,7 +2,9 @@ name: Build, publish and version dotnet devcontainer image
 
 on:
   push:
-    branches: ['main']
+    paths:
+      - 'containers/dotnet'
+      - '.github/workflows/dotnet.yml'
 
 env:
   REGISTRY: ghcr.io
