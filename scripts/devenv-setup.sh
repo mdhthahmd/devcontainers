@@ -27,3 +27,7 @@ shopt -u dotglob nullglob
 
 # clean up
 rm -rf environments .git
+
+
+# curl  https://api.github.com/repos/mdhthahmd/devcontainers/git/trees/main | jq -r '.tree[] | select(.path=="environments").url'
+# curl $(curl  https://api.github.com/repos/mdhthahmd/devcontainers/git/trees/main | jq -r '.tree[] | select(.path=="environments").url') | jq -r '.tree[].path'
