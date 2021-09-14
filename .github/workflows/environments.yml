@@ -1,0 +1,25 @@
+name: Update the .environments File
+
+on:
+  push:
+    paths:
+      - 'config'
+      - '.github/workflows/environments.yml'
+      - '.environments'
+
+jobs:
+  update-env-list:
+    name: Update .environments File
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: check working dir
+        uses: pwd
+
+      

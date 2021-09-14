@@ -14,19 +14,13 @@ GH_USER=mdhthahmd
 GH_REPO=devcontainers
 GH_BRANCH=main
 
-echo "https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH"
+#echo "https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH"
 
 GH_API_URL=$(
     curl -s https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH \
-    | sed 's/[",]//g' \
-    | sed 's/^ *//g' \
-    | tr '\n' ' ' \
-    | grep -e 'tree: \[.*\]' -o \
-    | grep -e '{.*}' -o \
-    | grep -e '{ path: environments .* }' -o \
-    | grep -e 'url: .* }' -o \
-    | cut -c 6- \
-    | sed 's/...$//'
+    | grep '"path": "environments"' -A4 \
+    | tail -1 \
+    | grep 'https[^\"]*' -o
 )
 
 GH_ENV_LIST=$(curl -s $GH_API_URL | awk '/path/ { gsub(/[",]/,"",$2); print $2}')
