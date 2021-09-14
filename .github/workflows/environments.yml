@@ -21,6 +21,6 @@ jobs:
 
       - name: check working dir
         run: |
-          pwd
+          ls -la
 
       
