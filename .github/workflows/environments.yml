@@ -27,8 +27,11 @@ jobs:
 
       - name: Set up git
         run : |
-          git remote set-url origin https://github.com/mdhthahmd/devcontainers.git
           git config --local user.email "mdhthahmd@gmail.com"
           git config --local user.name "mdhthahmd"
           git commit -m "updated .environnemnts file" -a
-          git push "https://mdhthahmd:${{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git $GITHUB_REF"
+      - name: Push
+        uses: ad-m/github-push-action@master
+        with:
+          github_token: ${{ secrets.GH_TOKEN }}
+          branch: ${{ github.ref }}
