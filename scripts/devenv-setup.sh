@@ -14,8 +14,20 @@ GH_USER=mdhthahmd
 GH_REPO=devcontainers
 GH_BRANCH=main
 
-GH_API_URL=$(curl -s https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH | jq -r '.tree[] | select(.path=="environments").url')
-GH_ENV_LIST=$( curl -s $GH_API_URL | jq -r '.tree[].path')
+GH_API_URL=$(
+    curl -s https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH \
+    | sed 's/[",]//g' \
+    | sed 's/^ *//g' \
+    | tr '\n' ' ' \
+    | grep -e 'tree: \[.*\]' -o \
+    | grep -e '{.*}' -o \
+    | grep -e '{ path: environments .* }' -o \
+    | grep 'url: .* } ' -o \
+    | cut -c 6- \
+    | sed 's/...$//'
+)
+
+GH_ENV_LIST=$(curl -s $GH_API_URL | awk '/path/ { gsub(/[",]/,"",$2); print $2}')
 
 declare -a DEV_ENVIRONMENTS=(`echo $GH_ENV_LIST | sed 's/\n/\n/g'`)
 noOfEnvs=${#DEV_ENVIRONMENTS[@]}
@@ -26,13 +38,16 @@ while true; do
         echo "[$i] ${DEV_ENVIRONMENTS[$i]}"
     done
     echo ""; read -p "please choose an environment: `echo $'\n> '`" env
-
     if [ "$env" -ge 0 ] && [ "$env" -le "$noOfEnvs" ]; then
         break
     fi
 done
 
-read -p "project name? ($PROJECT): " project
+read -p "project name? ($PROJECT): " name
+
+if [ -n "$name" ]; then
+    PROJECT=$name
+fi
 
 # check if $PROJECT exists and prompt to overwrite
 if [ -d "$PROJECT" ]; then
@@ -54,7 +69,7 @@ git remote add origin $REMOTE_DEVENV
 git sparse-checkout init
 git sparse-checkout set "environments/${DEV_ENVIRONMENTS[env]}"
 
-git pull origin main
+git pull origin $GH_BRANCH
 
 # move all files and folders including dot prefixed ones
 shopt -s dotglob nullglob
