@@ -19,8 +19,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: check working dir
+      - name: Write to .environments File
         run: |
-          ls -la
+          cat /dev/null > .environments
+          cd config
+          ls -1d -- */ | sed 's/\///g' >> ../.environments
+
+      - name: Set up git
+        run :
+          git remote set-url origin https://github.com/mdhthahmd/devcontainers.git
+          git config --local user.email "mdhthahmd@gmail.com"
+          git config --local user.name "mdhthahmd"
+          git commit -m "updated .environnemnts file" -a
+          git push https://{{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git
+
+
+
+      
+          
 
       
