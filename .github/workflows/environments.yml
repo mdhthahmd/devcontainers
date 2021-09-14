@@ -12,8 +12,8 @@ jobs:
     name: Update .environments File
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: write
+      contents: write
+      actions: write
 
     steps:
       - name: Checkout repository
@@ -30,8 +30,5 @@ jobs:
           git config --local user.email "mdhthahmd@gmail.com"
           git config --local user.name "mdhthahmd"
           git commit -m "updated .environnemnts file" -a
-      - name: Push
-        uses: ad-m/github-push-action@master
-        with:
-          github_token: ${{ secrets.GH_TOKEN }}
-          branch: ${{ github.ref }}
+          git push https://${{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git
+
