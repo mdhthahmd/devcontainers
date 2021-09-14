@@ -26,7 +26,7 @@ jobs:
           ls -1d -- */ | sed 's/\///g' >> ../.environments
 
       - name: Set up git
-        run :
+        run : |
           git remote set-url origin https://github.com/mdhthahmd/devcontainers.git
           git config --local user.email "mdhthahmd@gmail.com"
           git config --local user.name "mdhthahmd"
