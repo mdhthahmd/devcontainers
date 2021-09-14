@@ -14,6 +14,8 @@ GH_USER=mdhthahmd
 GH_REPO=devcontainers
 GH_BRANCH=main
 
+echo "https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH"
+
 GH_API_URL=$(
     curl -s https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH \
     | sed 's/[",]//g' \
@@ -22,7 +24,7 @@ GH_API_URL=$(
     | grep -e 'tree: \[.*\]' -o \
     | grep -e '{.*}' -o \
     | grep -e '{ path: environments .* }' -o \
-    | grep 'url: .* } ' -o \
+    | grep -e 'url: .* }' -o \
     | cut -c 6- \
     | sed 's/...$//'
 )
