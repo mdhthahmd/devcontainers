@@ -14,27 +14,17 @@ GH_USER=mdhthahmd
 GH_REPO=devcontainers
 GH_BRANCH=main
 
-#echo "https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH"
+declare -a DEV_ENVIRONMENTS=(`echo $( curl -s https://raw.githubusercontent.com/$GH_USER/$GH_REPO/$GH_BRANCH/.environments) | sed 's/\n/\n/g'`)
 
-GH_API_URL=$(
-    curl -s https://api.github.com/repos/$GH_USER/$GH_REPO/git/trees/$GH_BRANCH \
-    | grep '"path": "environments"' -A4 \
-    | tail -1 \
-    | grep 'https[^\"]*' -o
-)
-
-GH_ENV_LIST=$(curl -s $GH_API_URL | awk '/path/ { gsub(/[",]/,"",$2); print $2}')
-
-declare -a DEV_ENVIRONMENTS=(`echo $GH_ENV_LIST | sed 's/\n/\n/g'`)
-noOfEnvs=${#DEV_ENVIRONMENTS[@]}
+ENV_NO=${#DEV_ENVIRONMENTS[@]}
 
 while true; do
-    for (( i=0; i<${noOfEnvs}; i++ ));
+    for (( i=0; i < ${ENV_NO}; i++ ));
     do
         echo "[$i] ${DEV_ENVIRONMENTS[$i]}"
     done
     echo ""; read -p "please choose an environment: `echo $'\n> '`" env
-    if [ "$env" -ge 0 ] && [ "$env" -le "$noOfEnvs" ]; then
+    if [ "$env" -ge 0 ] && [ "$env" -le "$ENV_NO" ]; then
         break
     fi
 done
