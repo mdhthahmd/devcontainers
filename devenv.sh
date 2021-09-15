@@ -13,6 +13,7 @@ PROJECT=${1:-"new-project"}
 GH_USER=mdhthahmd
 GH_REPO=devcontainers
 GH_BRANCH=main
+GH_ENV_PATH=config
 
 declare -a DEV_ENVIRONMENTS=(`echo $( curl -s https://raw.githubusercontent.com/$GH_USER/$GH_REPO/$GH_BRANCH/.environments) | sed 's/\n/\n/g'`)
 
@@ -53,14 +54,14 @@ REMOTE_DEVENV=https://github.com/$GH_USER/$GH_REPO.git
 
 git remote add origin $REMOTE_DEVENV
 git sparse-checkout init
-git sparse-checkout set "config/${DEV_ENVIRONMENTS[env]}"
+git sparse-checkout set "$GH_ENV_PATH/${DEV_ENVIRONMENTS[env]}"
 
 git pull origin $GH_BRANCH
 
 # move all files and folders including dot prefixed ones
 shopt -s dotglob nullglob
-mv environments/${DEV_ENVIRONMENTS[env]}/* .
+mv $GH_ENV_PATH/${DEV_ENVIRONMENTS[env]}/* .
 shopt -u dotglob nullglob
 
 # clean up
-rm -rf environments .git
+rm -rf $GH_ENV_PATH .git
