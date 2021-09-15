@@ -48,7 +48,9 @@ if [ -d "$PROJECT" ]; then
     done
 fi
 
-git init $PROJECT && cd $PROJECT
+mkdir $PROJECT && cd $PROJECT
+git init
+git checkout -b main
 
 REMOTE_DEVENV=https://github.com/$GH_USER/$GH_REPO.git
 
@@ -65,3 +67,10 @@ shopt -u dotglob nullglob
 
 # clean up
 rm -rf $GH_ENV_PATH .git
+
+git clone https://github.com/$GH_USER/$PROJECT.git temp
+shopt -s dotglob nullglob
+mv temp/* .
+shopt -u dotglob nullglob
+
+rm -rf temp
