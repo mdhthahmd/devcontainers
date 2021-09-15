@@ -4,7 +4,7 @@
 # Licensed under the MIT License.
 #-------------------------------------------------------------------------------------------------------------
 #
-# Syntax: ./devenv-setup.sh [project name]
+# Syntax: ./devenv.sh [project name]
 
 set -e
 
