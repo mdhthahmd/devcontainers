@@ -53,7 +53,7 @@ REMOTE_DEVENV=https://github.com/$GH_USER/$GH_REPO.git
 
 git remote add origin $REMOTE_DEVENV
 git sparse-checkout init
-git sparse-checkout set "environments/${DEV_ENVIRONMENTS[env]}"
+git sparse-checkout set "config/${DEV_ENVIRONMENTS[env]}"
 
 git pull origin $GH_BRANCH
 
