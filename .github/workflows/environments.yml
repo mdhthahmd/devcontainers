@@ -3,7 +3,7 @@ name: Update the .environments File
 on:
   push:
     paths:
-      - 'config/*'
+      - 'config/**'
       - '.github/workflows/environments.yml'
       - '.environments'
 
