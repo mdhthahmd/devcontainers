@@ -43,6 +43,7 @@ jobs:
 
       - name: Commit update
         run: |
-          git commit -m "updated .envronments - ${{ github.event.head_commit.message }}" -a
+          git add .environments
+          git commit -m "updated .envronments - ${{ github.event.head_commit.message }}"
           git push https://${{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git
 
