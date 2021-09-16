@@ -1,6 +1,6 @@
 # [Choice] .NET version: 5.0, 3.1, 2.1
 ARG VARIANT="3.1"
-FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}-focal
+FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}-bullseye-slim
 
 # Copy library scripts to execute
 COPY library-scripts/*.sh library-scripts/*.env /tmp/library-scripts/
