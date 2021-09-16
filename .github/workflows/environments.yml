@@ -21,16 +21,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Write to .environments File
-        run: |
-          cat /dev/null > .environments
-          cd config
-          ls -1d -- */ | sed 's/\///g' >> ../.environments
-
       - name: Set up git
         run : |
           git config --local user.email "mdhthahmd@gmail.com"
           git config --local user.name "mdhthahmd"
+
+      - name : Delete .environments File
+        run : |
+          rm -rf .environments
+
+      - name : Commit delete
+        run : |
+          git commit -m "deleted .envronments - ${{ github.event.head_commit.message }}" -a
+          git push https://${{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git
+
+      - name: Update .environments File
+        run: |
+          cd config
+          ls -1d -- */ | sed 's/\///g' > ../.environments
+          cd ..
+
+      - name: Commit update
           git commit -m "updated .envronments - ${{ github.event.head_commit.message }}" -a
           git push https://${{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git
 
