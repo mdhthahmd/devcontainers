@@ -29,6 +29,6 @@ jobs:
         run : |
           git config --local user.email "mdhthahmd@gmail.com"
           git config --local user.name "mdhthahmd"
-          git commit -m "updated .environnemnts file" -a
+          git commit -m "updated .envronments - ${{ github.event.head_commit.message }}" -a
           git push https://${{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git
 
