@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+
+  dotnet:
+    image: ghcr.io/mdhthahmd/devcontainers/dotnet:sdk-3.1.413-nodejs-14.17.6  
+    volumes:
+      - ..:/workspace
+    user: vscode
+    command: sleep infinity
+
+   

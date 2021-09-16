@@ -1,0 +1,15 @@
+{
+    "name": "C# (.NET 5.0.401)",
+    "dockerComposeFile": "docker-compose.yml",
+    "service": "dotnet",
+    "workspaceFolder": "/workspace",
+    "settings": {},
+    "extensions": [
+        "ms-dotnettools.csharp",
+        "pkief.material-icon-theme"
+    ],
+    "postCreateCommand": [
+        "dotnet restore"
+    ],
+    "remoteUser": "vscode"
+}
