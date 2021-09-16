@@ -1,7 +1,8 @@
 # [Choice] .NET version: 5.0, 3.1, 2.1
+# ^ Does not work with bullseye
 ARG VARIANT="3.1"
-FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}-bullseye-slim
 
+FROM mcr.microsoft.com/dotnet/sdk:${VARIANT}-bullseye
 # Copy library scripts to execute
 COPY library-scripts/*.sh library-scripts/*.env /tmp/library-scripts/
 
