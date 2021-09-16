@@ -42,6 +42,7 @@ jobs:
           cd ..
 
       - name: Commit update
+        run: |
           git commit -m "updated .envronments - ${{ github.event.head_commit.message }}" -a
           git push https://${{ secrets.GH_TOKEN }}@github.com/mdhthahmd/devcontainers.git
 
