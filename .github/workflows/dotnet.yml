@@ -5,7 +5,7 @@ on:
     paths:
       - 'containers/dotnet/*'
       - '.github/workflows/dotnet.yml'
-      
+
   workflow_dispatch:
 
 env:
@@ -50,7 +50,7 @@ jobs:
         with:
           context: ./containers/dotnet
           build-args: |
-            VARIANT=5.0
+            VARIANT=3.1
             NODE_VERSION=lts/*
           push: true
           tags: ${{ steps.meta.outputs.tags }}
